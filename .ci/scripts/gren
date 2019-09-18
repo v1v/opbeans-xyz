@@ -2,5 +2,4 @@
 set -xe
 docker images
 IMAGE="docker.elastic.co/observability-ci/gren"
-docker pull "${IMAGE}" > /dev/null
 docker run --rm -t -v "$(pwd):/app" -u "$(id -u):$(id -g)" "${IMAGE}" "$@"
