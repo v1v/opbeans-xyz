@@ -5,7 +5,7 @@ module.exports = {
     "ignoreCommitsWith": ["chore", "refactor", "style"],
     "ignoreIssuesWith": ["no-release"],
     "ignoreTagsWith": ["-rc", "-alpha", "-beta", "test", "current"],
-    "ignoreLabels": ["closed", "automation", "enhancement", "bug", "fix",
+    "ignoreLabels": ["closed", "automation", "enhancement", "fix",
       "internal", "feature", "feat", "docs", "chore", "refactor", "ci",
       "perf", "test", "style"],
     "groupBy": {
