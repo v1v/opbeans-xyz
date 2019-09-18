@@ -51,7 +51,7 @@ pipeline {
           deleteDir()
           unstash 'source'
           dir(BASE_DIR){
-            sh 'make build'
+            sh 'echo build'
           }
         }
       }
@@ -65,15 +65,8 @@ pipeline {
           deleteDir()
           unstash 'source'
           dir(BASE_DIR){
-            sh "make test"
+            sh "echo test"
           }
-        }
-      }
-      post {
-        always {
-          junit(allowEmptyResults: true,
-            keepLongStdio: true,
-            testResults: "${BASE_DIR}/**/junit-*.xml")
         }
       }
     }
@@ -86,8 +79,7 @@ pipeline {
           deleteDir()
           unstash 'source'
           dir(BASE_DIR){
-            dockerLogin(secret: "${env.DOCKER_REGISTRY_SECRET}", registry: "${env.REGISTRY}")
-            sh script: "VERSION=${env.GIT_BASE_COMMIT} IMAGE=${env.TMP_IMAGE} make publish", label: "push docker image to ${env.TMP_IMAGE}"
+            sh script: "VERSION=${env.GIT_BASE_COMMIT} IMAGE=${env.TMP_IMAGE} echo publish", label: "push docker image to ${env.TMP_IMAGE}"
           }
         }
       }
@@ -95,14 +87,7 @@ pipeline {
     stage('Integration Tests') {
       agent none
       steps {
-        build(job: env.ITS_PIPELINE, propagate: env.CHANGE_ID?.trim() ? false : true,
-              wait: env.CHANGE_ID?.trim() ? false : true,
-              parameters: [string(name: 'AGENT_INTEGRATION_TEST', value: 'Opbeans'),
-                           string(name: 'BUILD_OPTS', value: "--with-opbeans-java --opbeans-java-image ${env.TMP_IMAGE} --opbeans-java-version ${env.GIT_BASE_COMMIT}"),
-                           string(name: 'GITHUB_CHECK_NAME', value: env.GITHUB_CHECK_ITS_NAME),
-                           string(name: 'GITHUB_CHECK_REPO', value: env.REPO),
-                           string(name: 'GITHUB_CHECK_SHA1', value: env.GIT_BASE_COMMIT)])
-        githubNotify(context: "${env.GITHUB_CHECK_ITS_NAME}", description: "${env.GITHUB_CHECK_ITS_NAME} ...", status: 'PENDING', targetUrl: "${env.JENKINS_URL}search/?q=${env.ITS_PIPELINE.replaceAll('/','+')}")
+        echo 'its'
       }
     }
     stage('Release') {
@@ -122,8 +107,7 @@ pipeline {
               deleteDir()
               unstash 'source'
               dir(BASE_DIR){
-                dockerLogin(secret: "${DOCKERHUB_SECRET}", registry: 'docker.io')
-                sh "VERSION=${BRANCH_NAME.equals('master') ? 'latest' : BRANCH_NAME} make publish"
+                sh "VERSION=${BRANCH_NAME.equals('master') ? 'latest' : BRANCH_NAME} echo publish"
               }
             }
           }
@@ -134,7 +118,6 @@ pipeline {
               deleteDir()
               unstash 'source'
               dir(BASE_DIR){
-                dockerLogin(secret: "${env.DOCKER_REGISTRY_SECRET}", registry: "${env.REGISTRY}")
                 withCredentials([string(credentialsId: '2a9602aa-ab9f-4e52-baf3-b71ca88469c7', variable: 'GREN_GITHUB_TOKEN')]) {
                   sh(label: 'Creating Release Notes', script: '.ci/scripts/release-notes.sh')
                 }
@@ -143,11 +126,6 @@ pipeline {
           }
         }
       }
-    }
-  }
-  post {
-    always {
-      notifyBuildResult()
     }
   }
 }
