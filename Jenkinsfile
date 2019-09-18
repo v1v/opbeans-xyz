@@ -96,7 +96,7 @@ pipeline {
         allOf {
           anyOf {
             branch 'master'
-            tag pattern: 'v\\d+\\.\\d+\\.\\d+*', comparator: 'REGEXP'
+            tag pattern: 'v\\d+\\.\\d+\\.\\d+.*', comparator: 'REGEXP'
           }
         }
       }
