@@ -10,7 +10,7 @@ module.exports = {
       "perf", "test", "style"],
     "groupBy": {
         "Enhancements": ["enhancement", "internal", "feature", "feat"],
-        "Bug Fixes": ["bug", "fix" , "wip"],
+        "Incidents": ["bug", "fix" , "wip", "incident"],
         "Documentation": ["docs", "question"],
         "No user affected": ["chore", "refactor", "perf", "test", "style"],
         "CI": ["ci"]
@@ -28,7 +28,7 @@ module.exports = {
           var icon = "🙈"
           if(placeholders.heading == 'Enhancements'){
             icon = "🚀"
-          } else if(placeholders.heading == 'Bug Fixes'){
+          } else if(placeholders.heading == 'Incidents'){
             icon = "🐛"
           } else if(placeholders.heading == 'Documentation'){
             icon = "📚"
