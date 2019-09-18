@@ -10,7 +10,7 @@ module.exports = {
       "perf", "test", "style"],
     "groupBy": {
         "Enhancements": ["enhancement", "internal", "feature", "feat"],
-        "Bug Fixes": ["bug", "fix"],
+        "Bug Fixes": ["bug", "fix" , "wip"],
         "Documentation": ["docs", "question"],
         "No user affected": ["chore", "refactor", "perf", "test", "style"],
         "CI": ["ci"]
